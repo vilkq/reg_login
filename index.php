@@ -37,21 +37,12 @@ $row = mysqli_fetch_assoc($data);
 
 echo "Список email-адресов, встречающихся более чем у одного пользователя:<br>";
 for ($i=1; $i <= $count; $i++) {
-    $data = mysqli_query($mysql, "
-
-
-
-
-
-        ");
-    $row = mysqli_fetch_array($data);
-    //if ($row['email'] > 0) {
-        echo '<br>'.$row[$i];
-    //}
+    $data = mysqli_query($mysql, "SELECT * FROM users WHERE (email IN (SELECT email FROM users GROUP BY email HAVING COUNT(*)>1) AND id = '$i')");
+    $row = mysqli_fetch_assoc($data);
+    if ($row['email'] > '') {
+        echo '<br>'.$row['email'];
+    }
 }
-
-
-
 
 echo "<br><hr/><br>";
 
