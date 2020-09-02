@@ -37,9 +37,9 @@ $row = mysqli_fetch_assoc($data);
 
 echo "Список email-адресов, встречающихся более чем у одного пользователя:<br>";
 for ($i=1; $i <= $count; $i++) {
-    $data = mysqli_query($mysql, "SELECT * FROM users WHERE (email IN (SELECT email FROM users GROUP BY email HAVING COUNT(*)>1) AND id = '$i')");
+    $data = mysqli_query($mysql, "SELECT email FROM users WHERE (email IN (SELECT email FROM users GROUP BY email HAVING COUNT(*)>1) AND id = '$i')");
     $row = mysqli_fetch_assoc($data);
-    if ($row['email'] > '') {
+    if ($row > NULL) {
         echo '<br>'.$row['email'];
     }
 }
@@ -54,7 +54,7 @@ echo 'Пользователи, которые не сделали ни одно
 for ($i=1; $i <= $count; $i++) {
     $data = mysqli_query($mysql, "SELECT user_id FROM orders WHERE id='$i' AND price = 0");
     $row = mysqli_fetch_assoc($data);
-    if ($row['user_id'] > 0) {
+    if ($row['user_id'] > NULL) {
         $data = mysqli_query($mysql, "SELECT login FROM users WHERE id = ".$row['user_id']."");
         $row = mysqli_fetch_assoc($data);
         echo '<br>'.$row['login'];
@@ -67,7 +67,7 @@ echo 'Пользователи, которые сделали более дву�
 for ($i=1; $i <= $count; $i++) {
     $data = mysqli_query($mysql, "SELECT user_id FROM orders WHERE id='$i' AND price > 2");
     $row = mysqli_fetch_assoc($data);
-    if ($row['user_id'] > 0) {
+    if ($row['user_id'] > NULL) {
         $data = mysqli_query($mysql, "SELECT login FROM users WHERE id = ".$row['user_id']."");
         $row = mysqli_fetch_assoc($data);
         echo '<br>'.$row['login'];
